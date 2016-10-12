@@ -63,7 +63,14 @@ for i=1:length(out2)
    else
      W1 = W;
    end   
-   beta=(X'*W1*X)\(X'*W*ly);
+   % beta = (X'*W1*X)\(X'*W*ly); 
+   beta=pinv(X'*W1*X) * (X'*W*ly); % this is more stable
+   % X = [13.5, 6.75, 6.75;6.75,6.75,0;6.75,0,0];
+   % y = [0.62;0.31;0.31];
+   % X\y         % [-0.0791, 0.125, 0.125]
+   % pinv(X) * y % [0.0306, 0.0153, 0.0153] 
+   % pinv(X * X') * X' * y % [0.0306, 0.0153, 0.0153] 
+     
    clear X W W1;
    mu(i,j)=beta(1);
    %gap(i,j)=0;
